@@ -6,21 +6,22 @@ import gym
 from baselines import deepq
 from baselines.common.atari_wrappers_deprecated import wrap_dqn, ScaledFloatFrame
 
-import numpy as np
 import tensorflow as tf
 
 
+summary_writer = tf.summary.FileWriter("logs/1-breakout-with-prio-replay")
+
 def callback(lcl, glb):
+    global summary_writer
+
     is_solved = False
     step = lcl['t']
-    if not hasattr(glb, "summary_writer"):
-        glb['summary_writer'] = tf.summary.FileWriter("logs/1-breakout-with-prio-replay")
     if step > 100:
-        mean_reward = np.mean(lcl['episode_rewards'][-101:1])
+        mean_reward = sum(lcl['episode_rewards'][-101:1]) / 100
         if step % 1000 == 0:
             summary = tf.Summary(value=[tf.Summary.Value(tag="reward", simple_value=mean_reward)])
-            glb['summary_writer'].add_summary(summary, global_step=step)
-            glb['summary_writer'].flush()
+            summary_writer.add_summary(summary, global_step=step)
+            summary_writer.flush()
         is_solved = mean_reward / 100 >= 30
     return is_solved
 
