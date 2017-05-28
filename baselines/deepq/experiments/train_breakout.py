@@ -17,7 +17,7 @@ def callback(lcl, glb):
     is_solved = False
     step = lcl['t']
     if step > 100:
-        mean_reward = sum(lcl['episode_rewards'][-101:1]) / 100
+        mean_reward = sum(lcl['episode_rewards'][-101:-1]) / 100.0
         if step % 1000 == 0:
             summary = tf.Summary(value=[tf.Summary.Value(tag="reward", simple_value=mean_reward)])
             summary_writer.add_summary(summary, global_step=step)
