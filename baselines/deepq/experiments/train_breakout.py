@@ -22,7 +22,7 @@ def callback(lcl, glb):
             summary = tf.Summary(value=[tf.Summary.Value(tag="reward", simple_value=mean_reward)])
             summary_writer.add_summary(summary, global_step=step)
             summary_writer.flush()
-        is_solved = mean_reward / 100 >= 30
+#        is_solved = mean_reward / 100 >= 30
     return is_solved
 
 
