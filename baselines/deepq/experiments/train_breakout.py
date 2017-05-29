@@ -9,7 +9,7 @@ from baselines.common.atari_wrappers_deprecated import wrap_dqn, ScaledFloatFram
 import tensorflow as tf
 
 
-summary_writer = tf.summary.FileWriter("logs/2-breakout-no-prio-replay")
+summary_writer = tf.summary.FileWriter("logs/3-breakout-no-prio-replay-no-dueling")
 
 
 def callback(lcl, glb):
@@ -31,7 +31,7 @@ def main():
     model = deepq.models.cnn_to_mlp(
         convs=[(32, 8, 4), (64, 4, 2), (64, 3, 1)],
         hiddens=[256],
-        dueling=True
+        dueling=False
     )
     act = deepq.learn(
         env,
