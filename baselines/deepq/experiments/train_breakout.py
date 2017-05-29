@@ -9,12 +9,12 @@ from baselines.common.atari_wrappers_deprecated import wrap_dqn, ScaledFloatFram
 import tensorflow as tf
 
 
-summary_writer = tf.summary.FileWriter("logs/1-breakout-with-prio-replay")
+summary_writer = tf.summary.FileWriter("logs/2-breakout-no-prio-replay")
+
 
 def callback(lcl, glb):
     global summary_writer
 
-    is_solved = False
     step = lcl['t']
     if step > 100:
         mean_reward = sum(lcl['episode_rewards'][-101:-1]) / 100.0
@@ -22,8 +22,7 @@ def callback(lcl, glb):
             summary = tf.Summary(value=[tf.Summary.Value(tag="reward", simple_value=mean_reward)])
             summary_writer.add_summary(summary, global_step=step)
             summary_writer.flush()
-#        is_solved = mean_reward / 100 >= 30
-    return is_solved
+    return False
 
 
 def main():
@@ -46,7 +45,7 @@ def main():
         learning_starts=10000,
         target_network_update_freq=1000,
         gamma=0.99,
-        prioritized_replay=True,
+        prioritized_replay=False,
         callback=callback
     )
     act.save("pong_model.pkl")
